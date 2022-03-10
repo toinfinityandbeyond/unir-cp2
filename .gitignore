@@ -3,3 +3,6 @@ terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 terraform/.terraform/*
 terraform/.terraform.lock.hcl
+azureuser@20.107.78.34
+azureuser@20.224.136.57
+azureuser@20.229.104.218

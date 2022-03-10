@@ -8,3 +8,9 @@ variable "enviroment" {
   type        = string
   default     = "Terraform cp2"
 }
+
+variable "private_key_path" {
+  type        = string
+  description = "Ruta para la clave privada de acceso a las instancias"
+  default     = "~/.ssh/sshKey.pem" # o la ruta correspondiente
+}

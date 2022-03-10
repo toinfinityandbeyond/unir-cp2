@@ -1,0 +1,35 @@
+users:
+  - name: azureuser
+    gecos: azureuser created user
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users
+    ssh_import_id: None
+    lock_passwd: true
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCf01c2hTk2OddCywnoCgda2lWvI/vI61JpJbiZkw8jCWIodMfxAirnsCzdjBSC9RBKL9kOj6jL/o9YYVXutgHYVmMMLB4uHR4AepnpGBkG6S9EpQuyxIgTzxxymfiMLzq5grjBibZNXJnDrod5YYEXy8v8f7zjrFgOb6m9dYgu8Mc0XqKRLNHmGHkds6UMQit8ZwjoBXSv9oEgdCLkZCeKR6bxEQlgiZvNNRRaUhpH4SEk8UII0itvMQQg5b7QVWQlGdfBKyPU5t6SZqJ5FO1uD2s5y/v4q5IAD11WCP+rDD0S/QjPizlmIYnOtM4O2aoCIJviVZT9zaf66w/h9z+MFMShMafgkbE6Lbbi3bRQ+ZeDepl2ivo/lGgW1G+G3QndBvqcGP3RGz1LiscqK9/lL/ogZloqTJl+HHmlr45JccoEvOAsoSrqgQUsyEO/1tw+AHyDlTUZclFKVLlDRrMXF09XrWqpzWEL/0QcMgcMb0MFl8A5RPzv5K8+q3Zu8tU= generated-by-azure
+
+# ssh_keys:
+#   rsa_private: |
+#     ${privatekey}
+#   rsa_public: ${publickey}
+
+package_update: true
+packages:
+  - ansible
+  - git
+
+write_files:
+- content: |
+    ${privatekey}
+  path: /home/${sshuser}/.ssh/id_rsa
+  permissions: '0400'
+  defer: true
+- content: |
+    ${publickey}
+  path: /home/${sshuser}/.ssh/id_rsa.pub
+  permissions: '0400'
+  defer: true
+    
+
+    
+  

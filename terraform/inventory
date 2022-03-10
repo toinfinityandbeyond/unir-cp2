@@ -1,0 +1,14 @@
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_user=azureuser
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[master]
+20.126.52.8
+
+[workers]
+20.126.17.50
+20.126.52.98
+
+[nfs]
+20.126.86.220

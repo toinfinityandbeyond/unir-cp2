@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~>2.0"
     }
+    cloudinit = {
+      source  = "hashicorp/cloudinit"
+      version = ">=2.2.0"
+    }
   }
 }
 
@@ -118,7 +122,6 @@ resource "azurerm_storage_account" "mystorageaccount" {
 }
 
 
-
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
   name                  = "myVM-${var.vms[count.index]}"
@@ -126,7 +129,8 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
   location              = var.location
   resource_group_name   = azurerm_resource_group.myterraformgroup.name
   network_interface_ids = [azurerm_network_interface.myterraformnic[count.index].id]
-  size                  = "Standard_DS1_v2"
+  size                  = var.vms[count.index] == "master" ? "Standard_B2s" : "Standard_DS1_v2"
+  custom_data           = data.template_cloudinit_config.config.rendered
 
   os_disk {
     name                 = "myOsDisk-${var.vms[count.index]}"
@@ -136,15 +140,14 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
-    version   = "latest"
+    offer     = "0001-com-ubuntu-server-jammy-daily"
+    sku       = "22_04-daily-lts-gen2"
+    version   = "22.04.202202110"
   }
 
   computer_name                   = "myvm-${var.vms[count.index]}"
   admin_username                  = var.ssh_user
   disable_password_authentication = true
-
   admin_ssh_key {
     username   = var.ssh_user
     public_key = file(var.public_key_path)
