@@ -30,10 +30,12 @@ resource "null_resource" "null2" {
     null_resource.null1
   ]
 
+  # waits to install all dependencies and packages
   provisioner "local-exec" {
-    command = "sleep 60"
+    command = "sleep 120"
   }
 
+  # check connectivity with ansible
   provisioner "local-exec" {
     command = "ssh -o StrictHostKeyChecking=no -i ${var.private_key_path} ${var.ssh_user}@${azurerm_linux_virtual_machine.myterraformvm[0].public_ip_address} 'ansible -i inventory -m ping all'"
   }

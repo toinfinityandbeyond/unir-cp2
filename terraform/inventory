@@ -4,11 +4,11 @@ ansible_user=azureuser
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [master]
-20.126.52.8
+20.23.239.104
 
 [workers]
-20.126.17.50
-20.126.52.98
+40.113.137.236
+40.113.143.93
 
 [nfs]
-20.126.86.220
+40.113.150.102
