@@ -8,6 +8,9 @@ data "template_cloudinit_config" "config" {
   # Main cloud-config configuration file.
   part {
     content_type = "text/cloud-config"
+    # Tuve muchos problemas con esta parte, al principio lo intenté con un templatefile pero había un problema al subirle las claves
+    # Asi que al final con mucho esfuerzo y paciencia lo conseguí con el yamlencode, que ahi si me dejaba
+
     # content = templatefile(
     #   "cloud-init.yaml",
     #   {
