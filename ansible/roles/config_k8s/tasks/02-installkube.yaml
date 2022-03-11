@@ -1,0 +1,24 @@
+- name: Agrega la firma oficial de Google GPG key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Agregamos repositorio de kubernetes
+  apt_repository:
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main 
+    state: present
+    filename: kubernetes.list
+    mode: 0600
+
+- name: Actualizamos paquetes
+  apt: 
+    update_cache: yes
+
+- name: Instalamos kubeadm, kubectl, kubelet y kubernetes-cni
+  apt:
+    name: 
+      - kubeadm=1.23.0-00
+      - kubectl=1.23.0-00
+      - kubelet=1.23.0-00
+      - kubernetes-cni
+    allow_unauthenticated: yes

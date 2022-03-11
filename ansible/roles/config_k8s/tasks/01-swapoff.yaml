@@ -1,0 +1,5 @@
+- name: Deshabilitamos la memoria de intercambio
+  command: swapoff -a
+
+- name: Deshabilitamos la memoria de intercambio, editando el archivo fstab
+  command: sed -i '/ swap / s/^/#/' /etc/fstab

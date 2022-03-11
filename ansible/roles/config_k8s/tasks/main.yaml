@@ -1,0 +1,5 @@
+---
+
+- include_tasks: 01-swapoff.yaml
+- include_tasks: 02-installkube.yaml
+- include_tasks: 03-installcrio.yaml

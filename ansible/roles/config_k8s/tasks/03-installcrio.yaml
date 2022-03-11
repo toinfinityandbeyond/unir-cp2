@@ -1,0 +1,64 @@
+- name: Configuramos los módulos del kernel necesarios para CRI-O
+  command: "{{item}}"
+  loop:
+    - modprobe overlay
+    - modprobe br_netfilter
+
+- name: Editando el archivo 99-kubernetes-cri.conf...
+  copy:
+    src: kubernetes-cri.conf
+    dest: /etc/sysctl.d/99-kubernetes-cri.conf
+
+- name: Aplicando cambios con sysctl
+  command: sysctl --system
+
+# Aquí estaba teniendo esta issue y lo solucioné así:
+# https://chrisjean.com/fix-apt-get-update-the-following-signatures-couldnt-be-verified-because-the-public-key-is-not-available/
+- name: Pidiendo las claves públicas para los repositorios
+  command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4D64390375060AA4
+
+- name: Añadimos los repositorios necesarios para CRI-O
+  apt_repository:
+    repo: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{os}}/ /"
+    state: present
+    filename: devel:kubic:libcontainers:stable.list
+    mode: 0600
+    
+- name: Añadimos los repositorios necesarios para CRI-O, parte 2
+  apt_repository:
+    repo: "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{version_crio}}/{{os}}/ /"
+    state: present
+    filename: "devel:kubic:libcontainers:stable:cri-o:{{version_crio}}.list"
+    mode: 0600
+    
+- name: Agrega la firma oficial de los paquetes de CRI-O
+  apt_key:
+    url: "https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{version_crio}}/{{os}}/Release.key"
+    state: present
+
+- name: Agrega la firma oficial de los paquetes de CRI-O, parte 2
+  apt_key:
+    url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{os}}/Release.key"
+    state: present
+
+- name: Actualizamos paquetes
+  apt: 
+    update_cache: yes
+
+- name: Instalamos cri-o y cri-o-runc
+  apt:
+    name: 
+      - cri-o
+      - cri-o-runc
+
+- name: Editando el archivo crio.conf...
+  copy:
+    src: crio.conf
+    dest: /etc/crio/crio.conf
+
+- name: Aplicando cambios con sysctl y habilitamos CRI-O
+  command: "{{item}}"
+  loop:
+    - systemctl daemon-reload
+    - systemctl enable crio
+    - systemctl start crio

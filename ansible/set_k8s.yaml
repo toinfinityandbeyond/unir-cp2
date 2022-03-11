@@ -1,0 +1,8 @@
+- name: Instalando dependencias de kubernetes en los nodos
+  hosts: [master,workers]
+  vars_files:
+    - "group_vars/general_config.yaml"
+  become: true
+  gather_facts: true
+  roles:
+   - config_k8s
