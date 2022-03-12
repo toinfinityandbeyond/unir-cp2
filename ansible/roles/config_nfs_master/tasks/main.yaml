@@ -1,0 +1,28 @@
+- name: Instalamos nfs-kernel-server
+  apt:
+    name: 
+      - nfs-kernel-server
+
+- name: Creamos el directorio que va a ser compartido => [/srv/nfs]
+  file:
+      path: /srv/nfs
+      state: directory
+      owner: "{{user}}"
+      group: "{{user}}"
+
+- name: Editando el archivo /etc/exports
+  blockinfile:
+        dest: /etc/exports
+        block: |
+          # master
+          /srv/nfs        {{master_private_ip}}(sync,wdelay,hide,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
+          # worker01
+          /srv/nfs        {{worker1_private_ip}}(sync,wdelay,hide,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
+          # worker02
+          /srv/nfs        {{worker2_private_ip}}(sync,wdelay,hide,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
+
+# Cuando hacía en config_nfs_client el mount me estaba dando este problema: access denied by server while mounting 10.0.1.10:/srv/nfs
+# Lo solucioné con esta línea
+# Fuente: https://unix.stackexchange.com/questions/106122/mount-nfs-access-denied-by-server-while-mounting-on-ubuntu-machines
+- name: Aplicando cambios en /etc/exports
+  command: exportfs -a

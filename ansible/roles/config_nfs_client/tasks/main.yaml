@@ -1,0 +1,18 @@
+- name: Instalamos nfs-common
+  apt:
+    name: 
+      - nfs-common
+
+- name: Creamos el directorio que va a ser compartido => [/nfs/general]
+  file:
+      path: /nfs/general
+      state: directory
+
+- name: Montamos la carpeta diciendo que hace referencia a nuestra carpeta del servidor nfs
+  ansible.posix.mount:
+    src: "{{master_private_ip}}:/srv/nfs"
+    path: /nfs/general
+    opts: rw,sync,hard,intr
+    state: mounted
+    fstype: nfs
+    boot: yes

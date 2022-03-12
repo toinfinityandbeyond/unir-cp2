@@ -1,0 +1,8 @@
+- name: Editando los archivos hosts de los nodos
+  blockinfile:
+        dest: /etc/hosts
+        block: |
+          {{master_private_ip}} kubemaster kubemaster.acme.es
+          {{worker1_private_ip}} kubenode1 kubenode1.acme.es
+          {{worker2_private_ip}} kubenode2 kubenode2.acme.es
+          {{nfs_private_ip}} nfs nfs.acme.es

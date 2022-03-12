@@ -1,0 +1,5 @@
+---
+master_private_ip: 10.0.1.10
+worker1_private_ip: 10.0.1.11
+worker2_private_ip: 10.0.1.12
+nfs_private_ip: 10.0.1.13 
