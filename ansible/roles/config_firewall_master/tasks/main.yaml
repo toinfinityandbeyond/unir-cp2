@@ -1,0 +1,31 @@
+- name: Activamos el transparent masquerading para que los pods puedan comunicarse
+  firewalld:
+    permanent: yes
+    masquerade: yes
+    state: enabled
+
+- name: Reglas de firewall para master
+  firewalld:
+    permanent: yes
+    immediate: yes
+    port: "{{ item }}"
+    state: enabled
+  loop:
+    - 10250/tcp
+    - 30000-32767/tcp
+    - 8285/udp
+    - 8472/udp
+
+- name: Permitimos el acceso desde los workers
+  firewalld:
+    permanent: yes
+    immediate: yes
+    rich_rule: "{{item}}"
+    state: enabled
+  loop:
+    - "rule family=ipv4 source address={{worker1_private_ip}}/32 accept"
+    - "rule family=ipv4 source address={{worker2_private_ip}}/32 accept"
+
+
+- name: Recargamos el firewall
+  command: firewall-cmd --reload

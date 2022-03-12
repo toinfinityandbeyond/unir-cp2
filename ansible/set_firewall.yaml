@@ -1,0 +1,24 @@
+- name: Configuraciones básicas de firewall en todos los nodos
+  hosts: all
+  vars_files:
+    - "group_vars/private_ips.yaml"
+  become: true
+  gather_facts: true
+  roles:
+   - config_firewall
+- name: Configuración de firewall en nfs
+  hosts: [nfs]
+  vars_files:
+    - "group_vars/private_ips.yaml"
+  become: true
+  gather_facts: true
+  roles:
+   - config_firewall_nfs
+- name: Configuración de firewall en master
+  hosts: [master]
+  vars_files:
+    - "group_vars/private_ips.yaml"
+  become: true
+  gather_facts: true
+  roles:
+   - config_firewall_master

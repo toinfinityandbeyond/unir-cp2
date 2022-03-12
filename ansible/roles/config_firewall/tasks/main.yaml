@@ -1,0 +1,6 @@
+- name: Habilita firewalld y lo inicializa
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+    masked: no

@@ -1,0 +1,6 @@
+- name: Resetea cluster
+  hosts: [master, workers]
+  become: true
+  gather_facts: true
+  roles:
+    - reset_cluster

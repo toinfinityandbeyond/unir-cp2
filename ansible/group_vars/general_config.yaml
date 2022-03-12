@@ -3,3 +3,4 @@ timezone: Europe/Madrid
 os: xUbuntu_20.04
 version_crio: 1.23
 user: azureuser
+networkcidr: 10.244.0.0/16

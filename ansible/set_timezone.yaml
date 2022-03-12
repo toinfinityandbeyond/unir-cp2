@@ -1,0 +1,8 @@
+- name: Sincronizando timezone
+  hosts: all
+  vars_files:
+    - "group_vars/general_config.yaml"
+  become: true
+  gather_facts: true
+  roles:
+   - timezone

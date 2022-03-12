@@ -1,0 +1,2 @@
+- name: Uniendo worker al cluster
+  shell: "{{ hostvars['master_node'].join_command }}"

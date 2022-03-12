@@ -1,0 +1,12 @@
+- name: Reglas de firewall para workers
+  firewalld:
+    permanent: yes
+    immediate: yes
+    port: "{{ item }}"
+    state: enabled
+  loop:
+    - 10250/tcp
+    - 30000-32767/tcp
+
+- name: Recargamos el firewall
+  command: firewall-cmd --reload

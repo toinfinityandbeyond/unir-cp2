@@ -1,0 +1,17 @@
+- name: Poniendo el timezone a Europe/Madrid
+  command: "timedatectl set-timezone {{timezone}}"
+
+- name: Instala chrony
+  apt:
+    name: 
+      - chrony
+
+- name: Habilita chronyd y lo inicializa
+  systemd:
+    name: chronyd
+    state: started
+    enabled: yes
+    masked: no
+
+- name: Sincroniza el timezone
+  command: timedatectl set-ntp true

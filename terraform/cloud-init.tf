@@ -34,7 +34,7 @@ data "template_cloudinit_config" "config" {
           "defer" : true
       }],
       "package_update" : true,
-      "packages" : ["ansible", "git"],
+      "packages" : ["ansible", "firewalld"],
     })
   }
 }

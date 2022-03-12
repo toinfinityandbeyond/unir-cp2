@@ -1,0 +1,13 @@
+- name: Abrimos los puertos del firewall en el NFS para que el servicio sea accesible
+  firewalld:
+    permanent: yes
+    immediate: yes
+    service: "{{ item }}"
+    state: enabled
+  loop:
+    - nfs
+    - rpc-bind
+    - mountd
+
+- name: Recargamos el firewall
+  command: firewall-cmd --reload
