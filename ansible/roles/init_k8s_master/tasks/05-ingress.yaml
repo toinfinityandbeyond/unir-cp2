@@ -8,6 +8,3 @@
 - name: Seteamos el comando join en un fact
   set_fact:
     join_command: "{{ join_command_raw.stdout_lines[0] }}"
-
-# - name: Reinicia la máquina si es necesario
-#   meta: flush_handlers
