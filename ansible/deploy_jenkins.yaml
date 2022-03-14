@@ -1,0 +1,8 @@
+- name: Desplegando Jenkins....
+  hosts: [master]
+  vars_files:
+    - "group_vars/general_config.yaml"
+  become: true
+  gather_facts: true
+  roles:
+   - deploy_jenkins

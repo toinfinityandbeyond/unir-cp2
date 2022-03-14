@@ -1,0 +1,2 @@
+- name: Creamos la pod network
+  shell: "kubectl --kubeconfig=/home/{{user}}/.kube/config apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml"

@@ -1,0 +1,22 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jenkins-ingress
+  namespace: jenkins-routed
+  labels:
+    app: jenkins-routed
+  annotations:
+      haproxy.org/path-rewrite: "/"
+spec:
+  rules:
+  - host: foo.bar
+    http:
+      paths:
+      - path: /jenkins-routed
+        pathType: "Prefix"
+        backend:
+          service:
+            name: jenkins-service
+            port:
+              number: 80

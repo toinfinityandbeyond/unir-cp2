@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: jenkins-service
+    namespace: jenkins-routed
+spec:
+    selector:
+      app: webapp
+    type: NodePort
+    ports:
+    - name: http
+      protocol: TCP
+      port: 80 # puerto en el que escucha el servicio
+      targetPort: 8080 # puerto en el que escucha el contenedor
+      nodePort: 32000 # puerto que hay que abrir al exterior, porque es el que accedemos por navegador

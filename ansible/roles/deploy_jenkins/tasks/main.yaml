@@ -1,0 +1,30 @@
+- name: Creando directorio de despliegue
+  file:
+    path: k8s_apps/jenkins
+    state: directory
+
+- name: Copiamos los templates al directorio creado
+  template:
+    src: "{{ item }}"
+    dest: k8s_apps/jenkins
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0644
+  with_items:
+    - jenkins-routed.yaml
+    - jenkins-service.yaml
+    - jenkins-ingress.yaml
+    - jenkins-configmap.yaml
+    - jenkins-storage.yaml
+
+- name: Creamos el namespace jenkins-routed
+  shell: "kubectl --kubeconfig=/home/{{user}}/.kube/config create namespace jenkins-routed"
+
+- name: Desplegamos la aplicación
+  shell: "kubectl --kubeconfig=/home/{{user}}/.kube/config apply -f k8s_apps/jenkins/{{ item }}"
+  with_items:
+    - jenkins-routed.yaml
+    - jenkins-service.yaml
+    - jenkins-ingress.yaml
+    - jenkins-configmap.yaml
+    - jenkins-storage.yaml

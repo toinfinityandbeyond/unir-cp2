@@ -1,0 +1,21 @@
+- name: "Crea el directorio /home/{{user}}/.kube"
+  file:
+    path: "/home/{{user}}/.kube"
+    state: directory
+    mode: 0755
+
+- name: Verifica si el archivo admin.conf existe
+  stat:
+    path: /etc/kubernetes/admin.conf
+  register: k8s_conf
+
+- name: Copiamos la configuración de admin.conf a .kube/config
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "/home/{{user}}/.kube/config"
+    remote_src: yes
+    owner: "{{user}}"
+  when: k8s_conf.stat.exists
+
+- name: Cambia los permisos de .kube/config
+  shell: "chown $(id -u):$(id -g) /home/{{user}}/.kube/config"

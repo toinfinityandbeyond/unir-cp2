@@ -1,0 +1,30 @@
+# - name: Aplica calico
+#   shell: "kubectl --kubeconfig=/home/{{user}}/.kube/config apply -f https://projectcalico.docs.tigera.io/manifests/canal.yaml >> pod_network_setup.txt"
+#   args:
+#     creates: pod_network_setup.txt
+
+# - name: Instalamos el operador de Tigera
+#   shell: "kubectl  --kubeconfig=/home/{{user}}/.kube/config create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml"
+
+
+- name: Creando directorio de sdn
+  file:
+    path: sdn
+    state: directory
+
+- name: Copiamos el template al directorio creado
+  template:
+    src: custom-resources.yaml
+    dest: sdn/custom-resources.yaml
+    owner: "{{user}}"
+    group: "{{user}}"
+    mode: 0644
+
+- name: Instalamos Calico
+  shell: "kubectl --kubeconfig=/home/{{user}}/.kube/config apply -f sdn/custom-resources.yaml"
+
+- name: Esperamos a que Calico se levante
+  shell: "sleep 60"
+
+# - name: Reinicia la máquina si es necesario
+#   meta: flush_handlers

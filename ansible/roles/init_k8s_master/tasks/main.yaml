@@ -1,39 +1,7 @@
-- name: Inicializa el cluster en master
-  shell: "kubeadm init --apiserver-advertise-address={{master_private_ip}} --pod-network-cidr={{networkcidr}}"
+---
 
-
-- name: "Crea el directorio /home/{{user}}/.kube"
-  file:
-    path: "/home/{{user}}/.kube"
-    state: directory
-    mode: 0755
-
-- name: Verifica si el archivo admin.conf existe
-  stat:
-    path: /etc/kubernetes/admin.conf
-  register: k8s_conf
-
-- name: Copiamos la configuración de admin.conf a .kube/config
-  copy:
-    src: /etc/kubernetes/admin.conf
-    dest: "/home/{{user}}/.kube/config"
-    remote_src: yes
-    owner: "{{user}}"
-  when: k8s_conf.stat.exists
-
-- name: Cambia los permisos de .kube/config
-  shell: "chown $(id -u):$(id -g) /home/{{user}}/.kube/config"
-
-- name: Aplica calico
-  shell: "kubectl --kubeconfig=/home/{{user}}/.kube/config apply -f https://docs.projectcalico.org/manifests/canal.yaml >> pod_network_setup.txt"
-  args:
-    creates: pod_network_setup.txt
-
-- name: Pedimos el comando que nos va a permitir unirnos al cluster
-  shell: kubeadm token create --print-join-command
-  register: join_command_raw
- 
-- name: Seteamos el comando join en un fact
-  set_fact:
-    join_command: "{{ join_command_raw.stdout_lines[0] }}"
- 
+- include_tasks: 01-initcluster.yaml
+- include_tasks: 02-copyconf.yaml
+- include_tasks: 03-networkpod.yaml
+- include_tasks: 04-sdn.yaml
+- include_tasks: 05-ingress.yaml
