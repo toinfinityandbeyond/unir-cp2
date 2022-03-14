@@ -7,7 +7,7 @@
   roles:
    - config_hosts
 - name: Preparando el servidor NFS
-  hosts: [master]
+  hosts: [nfs]
   vars_files:
     - "group_vars/general_config.yaml"
     - "group_vars/private_ips.yaml"
@@ -16,7 +16,7 @@
   roles:
    - config_nfs_master
 - name: Preparando el cliente NFS
-  hosts: [workers]
+  hosts: [workers, master]
   vars_files:
     - "group_vars/general_config.yaml"
     - "group_vars/private_ips.yaml"
