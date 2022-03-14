@@ -56,4 +56,13 @@ resource "null_resource" "null2" {
     command = "ssh -o StrictHostKeyChecking=no -i ${var.private_key_path} ${var.ssh_user}@${azurerm_linux_virtual_machine.myterraformvm[0].public_ip_address} 'ansible -i ansible/inventory -m ping all'"
   }
 
+  # Run Ansible playbook
+   provisioner "local-exec" {
+    command = "ssh -o StrictHostKeyChecking=no -i ${var.private_key_path} ${var.ssh_user}@${azurerm_linux_virtual_machine.myterraformvm[0].public_ip_address} 'cd ansible; bash deploy.sh;'"
+  }
+
+  provisioner "local-exec" {
+    command = "echo '¡ENHORABUENA! ¡Aplicación desplegada! Accede a estas urls, en alguna está la aplicación (depende de que nodo haya cogido, quizá tarde un poco):\n ${azurerm_linux_virtual_machine.myterraformvm[0].public_ip_address}:32000\n ${azurerm_linux_virtual_machine.myterraformvm[1].public_ip_address}:32000\n ${azurerm_linux_virtual_machine.myterraformvm[2].public_ip_address}:32000'"
+  }
+
 }
