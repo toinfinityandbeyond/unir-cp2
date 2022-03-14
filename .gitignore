@@ -6,3 +6,5 @@ terraform/.terraform.lock.hcl
 azureuser@20.107.78.34
 azureuser@20.224.136.57
 azureuser@20.229.104.218
+ansible/inventory
+ansible/group_vars/public_ips.yaml

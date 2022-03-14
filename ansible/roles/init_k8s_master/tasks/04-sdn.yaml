@@ -10,7 +10,7 @@
 # Tuve MUCHISIMOS problemas con el SDN. Al final tuve que bajarme este https://docs.projectcalico.org/manifests/calico.yaml 
 # Y guardarlo en custom-resources.yaml y modificarlo descomentando la variable CALICO_IPV4POOL_CIDR y poniendo mi CIDR (como indica en la guía oficial de Calico https://projectcalico.docs.tigera.io/getting-started/kubernetes/flannel/flannel)
 # Si lo hacía de cualquier otra forma, el haproxy se quedaba siempre en una red distinta (10.85.0.0/16) y el resto en la mía (192.168.0.0/16) y no era capaz de salir al exterior
-# Tampoco se solucionaba reiniciando la máquina, como pone en la guía de José Angel
+# Tampoco se solucionaba reiniciando la máquina, como pone en la guía de devopslabs
 # Aun así, la primera vez que levanta la app no pone ni el sdn ni el haproxy en mi CIDR, lo pone todo en la 10.85.0.0, 
 # pero al menos, como todo está en la misma red, soy capaz de salir al exterior.
 # Si se ejecuta una segunda vez el deploy.sh, al hacer el reset del cluster, ahí ya sí lo pone todo en mi CIDR (192.168.0.0)
